@@ -6,6 +6,5 @@ Step 1 Table Design
 
 Step 2 Data Ingestion
 
-![image](https://user-images.githubusercontent.com/81652137/180630315-00f35a05-f17a-4e96-862e-019e839a85e0.png)
-
+![image](https://user-images.githubusercontent.com/81652137/182288303-3aa33505-26d5-4583-86c1-a2a6e619fc22.png)
 
