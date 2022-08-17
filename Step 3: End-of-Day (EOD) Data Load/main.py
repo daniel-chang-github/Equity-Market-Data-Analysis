@@ -2,6 +2,9 @@
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
 from pyspark.sql import SparkSession
+from azure.storage.blob import BlockBlobService
+import config
+import os
 spark = SparkSession.builder.getOrCreate()
 
 dir = 'data/input/'
@@ -50,3 +53,17 @@ trades_080520.write.mode("overwrite").parquet('data/output/trade/trade_dt={}'.fo
 trades_080620.write.mode("overwrite").parquet('data/output/trade/trade_dt={}'.format('2020-08-06'))
 quote_080520.write.mode("overwrite").parquet('data/output/quote/trade_dt={}'.format('2020-08-05'))
 quote_080620.write.mode("overwrite").parquet('data/output/quote/trade_dt={}'.format('2020-08-06'))
+
+# Upload data to Azure Blob Storage
+blob_service = BlockBlobService(config.storage_account_name, config.storage_account_access_key)
+
+path_remove = "/Users/daniel/Desktop/Data_Engineering/Guided Capstone/Step 3 End-of-Day (EOD) Data Load/data/"
+local_path = "/Users/daniel/Desktop/Data_Engineering/Guided Capstone/Step 3 End-of-Day (EOD) Data Load/data/output"
+
+for r,d,f in os.walk(local_path):        
+    if f:
+        for file in f:
+            file_path_on_azure = os.path.join(r,file).replace(path_remove,"")
+            file_path_on_local = os.path.join(r,file)
+            blob_service.create_blob_from_path(config.container_name,file_path_on_azure,file_path_on_local)            
+
