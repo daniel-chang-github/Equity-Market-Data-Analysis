@@ -1,0 +1,41 @@
+# .sh file
+
+  #!/bin/sh
+  . ~/.profile
+  spark-submit \
+  --master local \
+  --conf spark.driver.extraClassPath='/Users/daniel/Desktop/Data_Engineering/Guided Capstone/Step 5 Pipeline Orchstration/jars/hadoop-azure-3.3.0.jar':'/Users/daniel/Desktop/Data_Engineering/Guided Capstone/Step 5 Pipeline Orchstration/jars/azure-storage-8.6.5.jar':'/Users/daniel/Desktop/Data_Engineering/Guided Capstone/Step 5 Pipeline Orchstration/jars/postgresql-42.4.0.jar' \
+  --conf spark.kubernetes.pyspark.pythonVersion=3.10.4 \
+  --py-files dist/pipeline_orchestration-0.0.1-py3.8.egg \
+  --jars jars/jetty-util-9.4.0.v20180619.jar,jars/jetty-util-ajax-9.4.0.v20180619.jar \
+  pipeline_orchestrator/ingestion/ingestion.py  
+
+
+# Error Message
+
+    daniel@Daniels-MacBook-Pro Step 5 Pipeline Orchstration % bash spark_ingest.sh                                                                          
+  spark_ingest.sh: line 2: /Users/daniel/.profile: No such file or directory
+  22/09/08 22:31:34 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+  Traceback (most recent call last):
+    File "/Users/daniel/Desktop/Data_Engineering/Guided Capstone/Step 5 Pipeline Orchstration/pipeline_orchestrator/ingestion/ingestion.py", line 5, in <module>
+      from azure.storage.blob import ContainerClient
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/azure/storage/blob/__init__.py", line 10, in <module>
+      from ._blob_client import BlobClient
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/azure/storage/blob/_blob_client.py", line 55, in <module>
+      from ._download import StorageStreamDownloader
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/azure/storage/blob/_download.py", line 21, in <module>
+      from ._encryption import (
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/azure/storage/blob/_encryption.py", line 21, in <module>
+      from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/cryptography/hazmat/primitives/ciphers/aead.py", line 10, in <module>
+      from cryptography.hazmat.backends.openssl import aead
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/cryptography/hazmat/backends/openssl/__init__.py", line 6, in <module>
+      from cryptography.hazmat.backends.openssl.backend import backend
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 63, in <module>
+      from cryptography.hazmat.bindings.openssl import binding
+    File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/cryptography/hazmat/bindings/openssl/binding.py", line 14, in <module>
+      from cryptography.hazmat.bindings._openssl import ffi, lib
+  ImportError: dlopen(/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/_cffi_backend.cpython-310-darwin.so, 0x0002): tried: '/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/_cffi_backend.cpython-310-darwin.so' (mach-o file, but is an incompatible architecture (have 'arm64', need 'x86_64'))
+  22/09/08 22:31:35 INFO ShutdownHookManager: Shutdown hook called
+  22/09/08 22:31:35 INFO ShutdownHookManager: Deleting directory /private/var/folders/dj/xlb7wf7909z93lz_fpb3x5dw0000gn/T/spark-3067b39a-777c-40d4-a91e-e99af2a60c35
+
